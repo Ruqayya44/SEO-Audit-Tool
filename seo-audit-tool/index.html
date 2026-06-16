@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Professional SEO Audit Checklist Tool — score your website's SEO health across On-Page, Technical, Content, Images, Links, Mobile, and Performance categories. Export reports instantly." />
+  <title>SEO Audit Tool — Professional SEO Checklist & Score Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ─── HEADER ─── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="url(#logoGrad)"/>
+            <path d="M8 10h16M8 16h12M8 22h8" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+            <circle cx="24" cy="22" r="4" fill="#fff" fill-opacity="0.25" stroke="#fff" stroke-width="1.5"/>
+            <path d="M22.5 22l1 1 2-2" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6C63FF"/>
+                <stop offset="1" stop-color="#3ECFCF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </span>
+        <span class="logo-text">SEO<strong>Audit</strong></span>
+      </div>
+      <nav class="header-actions" aria-label="Tool actions">
+        <button id="btnReset" class="btn btn-ghost" title="Reset all checks">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+          Reset
+        </button>
+        <button id="btnExport" class="btn btn-primary" title="Export / Print report">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/><line x1="12" y1="15" x2="12" y2="3"/><path d="M19 21H5a2 2 0 0 1-2-2V17"/></svg>
+          Export Report
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ─── URL AUDIT BAR ─── -->
+  <section class="url-audit-section" aria-label="URL Audit">
+    <div class="container">
+      <div class="url-audit-card">
+        <div class="url-audit-header">
+          <span class="url-audit-icon">🔍</span>
+          <div>
+            <h2 class="url-audit-title">Audit Your Website</h2>
+            <p class="url-audit-desc">Enter a URL to automatically scan it and pre-fill the checklist. Requires the backend server to be running on <code>localhost:5000</code>.</p>
+          </div>
+          <div class="backend-status" id="backendStatus" title="Backend connection status">
+            <span class="status-dot" id="statusDot"></span>
+            <span class="status-label" id="statusLabel">Checking…</span>
+          </div>
+        </div>
+        <form class="url-audit-form" id="urlAuditForm" autocomplete="off">
+          <div class="url-input-wrap">
+            <svg class="url-globe-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <input
+              type="url"
+              id="auditUrlInput"
+              class="url-input"
+              placeholder="https://yourwebsite.com"
+              aria-label="Website URL to audit"
+              required
+            />
+            <button type="submit" class="btn btn-audit" id="btnAudit">
+              <span class="btn-audit-text">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Audit URL
+              </span>
+              <span class="btn-audit-loading" hidden>
+                <svg class="spin" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                Scanning…
+              </span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Auto-Audit Results Panel (hidden until audit runs) -->
+        <div class="audit-results-panel" id="auditResultsPanel" hidden>
+          <div class="audit-results-grid" id="auditResultsGrid">
+            <!-- Injected by JS -->
+          </div>
+          <p class="audit-results-note">
+            ✅ Items checked above were auto-detected. Review and adjust the full checklist below.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HERO / SCORE PANEL ─── -->
+  <section class="hero-panel" aria-label="SEO Score Overview">
+    <div class="container">
+      <div class="hero-grid">
+
+        <!-- Score ring -->
+        <div class="score-ring-wrap">
+          <div class="score-ring" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Overall SEO Score">
+            <svg class="ring-svg" viewBox="0 0 140 140" aria-hidden="true">
+              <circle class="ring-track" cx="70" cy="70" r="58" />
+              <circle class="ring-progress" id="ringProgress" cx="70" cy="70" r="58" />
+            </svg>
+            <div class="ring-center">
+              <span class="ring-score" id="scoreValue">0</span>
+              <span class="ring-label">/ 100</span>
+            </div>
+          </div>
+          <div class="score-badge" id="scoreBadge">Not Started</div>
+        </div>
+
+        <!-- Stats + Recommendation -->
+        <div class="hero-info">
+          <h1 class="hero-title">SEO Audit Checklist</h1>
+          <p class="hero-subtitle">Evaluate your website across 7 critical SEO dimensions. Check each item, track your score, and export a polished audit report.</p>
+
+          <div class="stats-row">
+            <div class="stat-card">
+              <span class="stat-num" id="statChecked">0</span>
+              <span class="stat-label">Checked</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num" id="statTotal">0</span>
+              <span class="stat-label">Total Items</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num" id="statCategories">7</span>
+              <span class="stat-label">Categories</span>
+            </div>
+          </div>
+
+          <div class="recommendation-box" id="recommendationBox">
+            <div class="rec-icon" id="recIcon">💡</div>
+            <p class="rec-text" id="recText">Start checking items to see your personalised SEO recommendations.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Overall progress bar -->
+      <div class="overall-progress">
+        <div class="progress-label">
+          <span>Overall Progress</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar-track" role="progressbar" aria-label="Overall progress">
+          <div class="progress-bar-fill" id="overallProgressFill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MAIN CHECKLIST ─── -->
+  <main class="main-content" id="mainContent">
+    <div class="container">
+
+      <!-- Category Filter Tabs -->
+      <div class="filter-tabs" id="filterTabs" role="tablist" aria-label="SEO category filters">
+        <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true" id="tabAll">All</button>
+      </div>
+
+      <!-- Category Cards Grid -->
+      <div class="categories-grid" id="categoriesGrid" aria-live="polite">
+        <!-- Injected by JS -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ─── PRINT REPORT (hidden on screen) ─── -->
+  <div id="printReport" class="print-report" aria-hidden="true">
+    <div class="print-header">
+      <h1>SEO Audit Report</h1>
+      <p class="print-meta">Generated: <span id="printDate"></span></p>
+    </div>
+    <div class="print-score-section">
+      <div class="print-score-circle">
+        <span id="printScore">0</span>
+        <small>/ 100</small>
+      </div>
+      <div class="print-score-info">
+        <h2 id="printBadge">—</h2>
+        <p id="printRec"></p>
+      </div>
+    </div>
+    <div id="printCategories"></div>
+    <div class="print-footer">
+      <p>Generated by SEO Audit Tool &bull; seoaudit.tool</p>
+    </div>
+  </div>
+
+  <!-- ─── TOAST ─── -->
+  <div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
